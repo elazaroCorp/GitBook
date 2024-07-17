@@ -4,5 +4,5 @@
 
 ## Guías detalladas
 
-* [Server](guias-detalladas/server.md)
 * [🔐 Secret](guias-detalladas/secret.md)
+* [Server](guias-detalladas/server.md)

@@ -24,8 +24,8 @@ En los ejemplos, se seguirá la siguiente estructura de archivos presentada.
 Proyect
 ├── package.json
 ├── src
-|    ├── Application.js
-|    ├── Secrets 
+│    ├── Application.js
+│    ├── Secrets 
 │    │    ├── Secrets.interface.js
 │    │    ├── Secrets.js
 │    │    └── index.js
@@ -38,8 +38,8 @@ Proyect
 Proyect
 ├── package.json
 ├── src
-|    ├── Application.ts
-|    ├── Secrets 
+│    ├── Application.ts
+│    ├── Secrets 
 │    │    ├── Secrets.interface.ts
 │    │    ├── Secrets.ts
 │    │    └── index.ts
@@ -196,7 +196,7 @@ module.exports = { secrets }
 
 {% tab title="Secrets.ts" %}
 ```typescript
-import { SecretBase } from 'cc-backend-ts'
+import { SecretBase, BearerStrategyOptions } from 'cc-backend-ts'
 import { TSecrets } from './Secret.interface'
 
 class SecretCustom extends SecretBase<TSecrets> {
@@ -212,7 +212,7 @@ class SecretCustom extends SecretBase<TSecrets> {
     })
   }
 
-  get bearerStrategyOptions(): any {
+  get bearerStrategyOptions(): BearerStrategyOptions {
     return {
       clientID: this.value.clientID,
       isB2C: this.value.isB2C === 'true',
@@ -224,8 +224,7 @@ class SecretCustom extends SecretBase<TSecrets> {
   }
 }
 
-const secrets = new SecretCustom()
-export default secrets
+export const secrets = new SecretCustom()
 ```
 {% endtab %}
 {% endtabs %}
