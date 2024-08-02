@@ -48,7 +48,7 @@ export async function startApplication() {
 
 En el ejemplo básico que sirve como seudocódigo para instanciar un Server. En secciones posteriores se pondrá ejemplos más realistas.
 
-<table><thead><tr><th width="190">Pasos</th><th>Descripcion</th></tr></thead><tbody><tr><td>setRoutes(..)</td><td>Esta es una función que añade las rutas usando el método <code>use</code> de express.<mark style="color:blue;"><code>Router</code></mark></td></tr><tr><td>secret.uploadAll()</td><td>Carga los secretos definidos en la instancia secret. Los valores serán usando en el constructor de la clase Server.</td></tr><tr><td>new Server(props)</td><td>Se instancia server pasando los props necesarios y ejecutando el método <code>init</code> .</td></tr></tbody></table>
+<table><thead><tr><th width="234">Pasos</th><th>Descripcion</th></tr></thead><tbody><tr><td>setRoutes(..)</td><td>Esta es una función que añade las rutas usando el método <code>use</code> de express.<mark style="color:blue;"><code>Router</code></mark></td></tr><tr><td>secret.uploadAll()</td><td>Carga los secretos definidos en la instancia secret. Los valores serán usando en el constructor de la clase Server.</td></tr><tr><td>new Server(props)</td><td>Se instancia server pasando los props necesarios y ejecutando el método <code>init</code> .</td></tr></tbody></table>
 
 ## External Server
 
