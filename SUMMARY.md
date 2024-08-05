@@ -12,3 +12,4 @@
 ***
 
 * [Service](service.md)
+* [Routes](routes.md)
