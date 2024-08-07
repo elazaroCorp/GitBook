@@ -254,3 +254,80 @@ Ejemplo usando Joi
 
 ## Swagger
 
+La documentacion de swagger se define usando un objeto con los siguientes parametros.
+
+<table><thead><tr><th width="162">Campo</th><th width="284">Tipo</th><th>Descripción</th></tr></thead><tbody><tr><td>description</td><td>string</td><td>Descripción del endpoint</td></tr><tr><td>consumes?</td><td>IOType[]</td><td>Tipos de entrada que consume el endpoint</td></tr><tr><td>produces?</td><td>IOType[]</td><td>Tipos de salida que produce el endpoint</td></tr><tr><td>tags?</td><td>string[]</td><td>Etiquetas para la organización y filtrado del endpoint</td></tr><tr><td>summary?</td><td>string</td><td>Resumen corto del propósito del endpoint</td></tr><tr><td>deprecaded?</td><td>boolean</td><td>Indica si el endpoint está en desuso</td></tr><tr><td>ignore?</td><td>boolean</td><td>Indica si se debe ignorar el endpoint en la documentación</td></tr><tr><td>parameters?</td><td>{[K: string]: ParameterSwagger }</td><td>Objeto que define los parámetros del endpoint</td></tr><tr><td>responses?</td><td>{[K: number]: ResponseSwagger }</td><td>Objeto que define las respuestas del endpoint</td></tr></tbody></table>
+
+> El simbolo `?` indica que el parametro es opcional, tal como lo define en TypeScript.
+
+
+
+### AuthType
+
+Tipo de Autenticación
+
+```typescript
+type AuthType = 'basicAuth' | 'bearerAuth'
+```
+
+### IOType
+
+Tipo de entrada y salida de datos
+
+```typescript
+type IOType = 'application/json' | 'multipart/form-data'
+```
+
+### ParamIn
+
+Donde se encuentra el parámetro de entrada
+
+```typescript
+type ParamIn = 'query' | 'body' | 'formData' | 'path' | 'header'
+```
+
+### ParamType
+
+Tipo de parámetro de entrada
+
+```typescript
+type ParamType =
+  | 'string'
+  | 'number'
+  | 'boolean'
+  | 'array'
+  | 'integer'
+  | 'object'
+  | 'file'
+```
+
+### ParamFormat
+
+Formato del parámetro de entrada
+
+```typescript
+type ParamFormat =
+  | 'int32'
+  | 'int64'
+  | 'float'
+  | 'double'
+  | 'byte'
+  | 'binary'
+  | 'date'
+  | 'date-time'
+  | 'password'
+  | 'email'
+  | 'uuid'
+  | 'uri'
+```
+
+### ParamCollectionFormat
+
+Formato de colección, solo usar cuando el tipo `IOType` es `multipart/form-data`
+
+```typescript
+type ParamCollectionFormat = 'csv' | 'ssv' | 'tsv' | 'pipes' | 'multi'
+```
+
+
+
