@@ -254,15 +254,175 @@ Ejemplo usando Joi
 
 ## Swagger
 
-La documentacion de swagger se define usando un objeto con los siguientes parametros.
+La documentación se define usando un objeto con la clave `swagger` , se tiene el siguiente ejemplo donde se mapean todos los parámetros disponibles.
 
-<table><thead><tr><th width="162">Campo</th><th width="284">Tipo</th><th>Descripción</th></tr></thead><tbody><tr><td>description</td><td>string</td><td>Descripción del endpoint</td></tr><tr><td>consumes?</td><td>IOType[]</td><td>Tipos de entrada que consume el endpoint</td></tr><tr><td>produces?</td><td>IOType[]</td><td>Tipos de salida que produce el endpoint</td></tr><tr><td>tags?</td><td>string[]</td><td>Etiquetas para la organización y filtrado del endpoint</td></tr><tr><td>summary?</td><td>string</td><td>Resumen corto del propósito del endpoint</td></tr><tr><td>deprecaded?</td><td>boolean</td><td>Indica si el endpoint está en desuso</td></tr><tr><td>ignore?</td><td>boolean</td><td>Indica si se debe ignorar el endpoint en la documentación</td></tr><tr><td>parameters?</td><td>{[K: string]: ParameterSwagger }</td><td>Objeto que define los parámetros del endpoint</td></tr><tr><td>responses?</td><td>{[K: number]: ResponseSwagger }</td><td>Objeto que define las respuestas del endpoint</td></tr></tbody></table>
+```javascript
+this.post({
+  swagger: {
+        description: 'Register Client',
+        consumes: ['application/json'],
+        produces: ['multipart/form-data'],
+        tags: ['Client'],
+        summary: 'Register'
+        deprecaded: false,
+        ignore: false,
+        parameters: {
+          body: {
+            in: 'body',
+            required: true,
+            schemaRef: 'ClientGetByIdRequest'
+          },
+          id: {
+            in: 'path',
+            required: true,
+            type: 'string'
+          }
+       },
+       responses: { 200: { schemaRef: 'ClientGetByIdResponse' } },
+  }
+})
+```
 
-> El simbolo `?` indica que el parametro es opcional, tal como lo define en TypeScript.
+Sin embargo, muchos de ellos son opcionales con valores por defecto. Por ello, en general se van a definir los siguientes parámetros **description, responses y parameters**.
+
+```javascript
+this.post({
+  swagger: {
+        description: 'Register Client'
+        parameters: {
+          body: {
+            in: 'body',
+            required: true,
+            schemaRef: 'ClientGetByIdRequest'
+          }
+       },
+       responses: { 200: { schemaRef: 'ClientGetByIdResponse' } },
+  }
+})
+```
+
+### Swagger Autogen
+
+El desarrollo de la definición swagger está desarrolladas sobre la librería `Swagger autongen` . Esta la librería usa comentarios para definir los endpoint, esto impide a que el editor de código le proporcione la ayuda al desarrollador. &#x20;
+
+**Requerimientos:**
+
+* Las rutas tienen que definirse en un archivo con el siguiente nombre `<name>.routes.ts` o `<name>.routes.js`
+* Se tiene que tener un archivo `swagger-autogen`
 
 
 
-### AuthType
+
+
+### Parametros Endpoint
+
+Los parámetros disponibles son:
+
+<table><thead><tr><th width="145">Campo</th><th width="195">Tipo</th><th width="265">Descripción</th><th>Default Value</th></tr></thead><tbody><tr><td>description</td><td>string</td><td>Descripción</td><td>-</td></tr><tr><td>consumes?</td><td><a href="routes.md#iotype">IOType</a>[]</td><td>Tipos de entrada que consume</td><td><code>json</code></td></tr><tr><td>produces?</td><td><a href="routes.md#iotype">IOType</a>[]</td><td>Tipos de salida que produce</td><td><code>json</code></td></tr><tr><td>tags?</td><td>string[]</td><td>Etiquetas para la organización y filtrado</td><td>name_module</td></tr><tr><td>summary?</td><td>string</td><td>Resumen corto del propósito</td><td>null</td></tr><tr><td>deprecaded?</td><td>boolean</td><td>Indica si está en desuso</td><td><code>false</code></td></tr><tr><td>ignore?</td><td>boolean</td><td>Indica si se debe ignorar en la documentación</td><td><code>false</code></td></tr><tr><td>parameters?</td><td>{[K: string]: <a href="routes.md#parameterswagger">ParameterSwagger</a> }</td><td>Objeto que define los parámetros</td><td>-</td></tr><tr><td>responses?</td><td>{[K: number]: <a href="routes.md#responseswagger">ResponseSwagger</a> }</td><td>Objeto que define las respuestas</td><td>-</td></tr></tbody></table>
+
+> El símbolo `?` indica que el parámetro es opcional, tal como lo define en TypeScript.
+
+### ParameterSwagger
+
+Cada input se debe definir un objeto con los siguientes datos.
+
+<table><thead><tr><th width="186">Campo</th><th width="207">Tipo</th><th>Descripción</th></tr></thead><tbody><tr><td>in</td><td><a href="routes.md#paramin">ParamIn</a></td><td>Indica la ubicación del parámetro (query, header, path, etc.)</td></tr><tr><td>description?</td><td>string</td><td>Descripción del parámetro</td></tr><tr><td>required?</td><td>boolean</td><td>Indica si el parámetro es obligatorio</td></tr><tr><td>type?</td><td><a href="routes.md#paramtype">ParamType</a></td><td>Tipo de dato del parámetro (string, number, boolean, etc.)</td></tr><tr><td>format?</td><td><a href="routes.md#paramformat">ParamFormat</a></td><td>Formato del parámetro (int32, float, double, etc.)</td></tr><tr><td>schema?</td><td>Record&#x3C;string, any></td><td>Esquema del parámetro</td></tr><tr><td>schemaRef?</td><td>string</td><td>Referencia a un esquema externo</td></tr><tr><td>collectionFormat?</td><td><a href="routes.md#paramcollectionformat">ParamCollectionFormat</a></td><td>Formato de colección del parámetro</td></tr><tr><td>items?</td><td>Record&#x3C;string, any></td><td>Definición de los elementos si el parámetro es un array</td></tr></tbody></table>
+
+#### **Input Query**
+
+```javascript
+parameters: {
+  date: {
+    in: 'query',
+    description: 'Fecha',
+    required: true,
+    type: 'string'
+  }
+}
+```
+
+#### **Input Path**
+
+```javascript
+parameters: {
+  name: {
+    in: 'path',
+    description: 'Nombre',
+    required: true,
+    type: 'string'
+  }
+}
+```
+
+#### **Input Body Schema**
+
+```javascript
+parameters: {
+  body: {
+    in: 'body',
+    description: 'New Client',
+    schema: {
+      name: 'John Doe',
+      $age: 29,
+      about: ''
+    }
+  }
+}
+```
+
+> El simbolo $ indica que es un dato obligatorio
+
+#### Input Body SchemaRef
+
+```javascript
+parameters: {
+  body: {
+    in: 'body',
+    required: true,
+    schemaRef: 'ClientGetByIdRequest'
+  }
+}
+```
+
+#### Input File
+
+```javascript
+consumes: ['multipart/form-data'] 
+parameters: {
+  singleFile: {
+    in: 'formData',
+    type: 'file',
+    required: 'true',
+    description: 'Archivo simple',
+  }
+}
+```
+
+#### Input MultiFile
+
+```javascript
+consumes: ['multipart/form-data'] 
+parameters: {
+  multFiles: {
+    in: 'formData',
+    type: 'array',
+    required: true,
+    description: 'Varios Archivos',
+    collectionFormat: 'multi',
+    items: { type: 'file' }
+  }
+}
+```
+
+
+
+### ResponseSwagger
+
+
+
+### Tipos de Datos
+
+#### AuthType
 
 Tipo de Autenticación
 
@@ -270,7 +430,7 @@ Tipo de Autenticación
 type AuthType = 'basicAuth' | 'bearerAuth'
 ```
 
-### IOType
+#### IOType
 
 Tipo de entrada y salida de datos
 
@@ -278,7 +438,7 @@ Tipo de entrada y salida de datos
 type IOType = 'application/json' | 'multipart/form-data'
 ```
 
-### ParamIn
+#### ParamIn
 
 Donde se encuentra el parámetro de entrada
 
@@ -286,7 +446,7 @@ Donde se encuentra el parámetro de entrada
 type ParamIn = 'query' | 'body' | 'formData' | 'path' | 'header'
 ```
 
-### ParamType
+#### ParamType
 
 Tipo de parámetro de entrada
 
@@ -301,7 +461,7 @@ type ParamType =
   | 'file'
 ```
 
-### ParamFormat
+#### ParamFormat
 
 Formato del parámetro de entrada
 
@@ -321,7 +481,7 @@ type ParamFormat =
   | 'uri'
 ```
 
-### ParamCollectionFormat
+#### ParamCollectionFormat
 
 Formato de colección, solo usar cuando el tipo `IOType` es `multipart/form-data`
 
