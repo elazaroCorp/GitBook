@@ -308,17 +308,88 @@ El desarrollo de la definición swagger está desarrolladas sobre la librería `
 **Requerimientos:**
 
 * Las rutas tienen que definirse en un archivo con el siguiente nombre `<name>.routes.ts` o `<name>.routes.js`
-* Se tiene que tener un archivo `swagger-autogen`
+* Se tiene que tener un archivo `swagger-autogen`&#x20;
 
+{% tabs %}
+{% tab title="swagger-autogen.js" %}
+```javascript
+const { Swagger } = require('cc-backend-ts')
+const { ClientSwagger } = require('./src/modules/client')
 
+const doc = {
+  info: {
+    version: '1.0.0',
+    title: 'API Clientes',
+    description: 'Api negocio clientes',
+  },
+  host: 'localhost:3000',
+  definitions: {
+    ...ClientSwagger,
+  },
+}
 
+const swagger = new Swagger(doc)
+swagger.run()
+```
+{% endtab %}
 
+{% tab title="swagger-autogen.ts" %}
+```typescript
+import { Swagger } from 'cc-backend-ts'
+import { ClientSwagger } from './src/modules/client'
 
-### Parametros Endpoint
+const doc = {
+  info: {
+    version: '1.0.0',
+    title: 'API Clientes',
+    description: 'Api negocio clientes',
+  },
+  host: 'localhost:3000',
+  definitions: {
+    ...ClientSwagger
+  }
+}
+
+const swagger = new Swagger(doc)
+swagger.run()
+
+```
+{% endtab %}
+{% endtabs %}
+
+* Agregar en los comandos npm en `package.json`
+
+{% tabs %}
+{% tab title="package.json [js]" %}
+```javascript
+"scripts": {
+   //"...",
+   "swagen": "node swagger-autogen.js",
+}
+```
+{% endtab %}
+
+{% tab title="package.json [ts]" %}
+```typescript
+"scripts": {
+   //"...",
+   "swagen": "ts-node --pretty --transpile-only swagger-autogen.ts"
+}
+```
+{% endtab %}
+{% endtabs %}
+
+* Ejecutar el comando, cada vez que se cambie la definición. Se va a crear un archivo `swagger-generate.json` el cual será usado por los pipelines de Azure.
+
+```bash
+npm run swagen   
+```
+
+### Parámetros Endpoint
 
 Los parámetros disponibles son:
 
-<table><thead><tr><th width="145">Campo</th><th width="195">Tipo</th><th width="265">Descripción</th><th>Default Value</th></tr></thead><tbody><tr><td>description</td><td>string</td><td>Descripción</td><td>-</td></tr><tr><td>consumes?</td><td><a href="routes.md#iotype">IOType</a>[]</td><td>Tipos de entrada que consume</td><td><code>json</code></td></tr><tr><td>produces?</td><td><a href="routes.md#iotype">IOType</a>[]</td><td>Tipos de salida que produce</td><td><code>json</code></td></tr><tr><td>tags?</td><td>string[]</td><td>Etiquetas para la organización y filtrado</td><td>name_module</td></tr><tr><td>summary?</td><td>string</td><td>Resumen corto del propósito</td><td>null</td></tr><tr><td>deprecaded?</td><td>boolean</td><td>Indica si está en desuso</td><td><code>false</code></td></tr><tr><td>ignore?</td><td>boolean</td><td>Indica si se debe ignorar en la documentación</td><td><code>false</code></td></tr><tr><td>parameters?</td><td>{[K: string]: <a href="routes.md#parameterswagger">ParameterSwagger</a> }</td><td>Objeto que define los parámetros</td><td>-</td></tr><tr><td>responses?</td><td>{[K: number]: <a href="routes.md#responseswagger">ResponseSwagger</a> }</td><td>Objeto que define las respuestas</td><td>-</td></tr></tbody></table>
+<table><thead><tr><th width="145">Campo</th><th width="195">Tipo</th><th width="265">Descripción</th><th>Default Value</th></tr></thead><tbody><tr><td>description</td><td>string</td><td>Descripción</td><td>-</td></tr><tr><td>consumes?</td><td><a href="routes.md#iotype">IOType</a>[]</td><td>Tipos de entrada que consume</td><td><code>json</code></td></tr><tr><td>produces?</td><td><a href="routes.md#iotype">IOType</a>[]</td><td>Tipos de salida que produce</td><td><code>json</code></td></tr><tr><td>tags?</td><td>string[]</td><td>Etiquetas para la organización y filtrado</td><td>name_module</td></tr><tr><td>summary?</td><td>string</td><td>Resumen corto del propósito</td><td>null</td></tr><tr><td>deprecaded?</td><td>boolean</td><td>Indica si está en desuso</td><td><code>false</code></td></tr><tr><td>ignore?</td><td>boolean</td><td>Indica si se debe ignorar en la documentación</td><td><code>false</code></td></tr><tr><td>parameters?</td><td>{[K: string]: <a href="routes.md#parameterswagger">ParameterSwagger</a> }</td><td>Objeto que define los parámetros</td><td>-</td></tr><tr><td>responses?</td><td>{[K: number]: <a href="routes.md#responseswagger">ResponseSwagger</a> }</td><td>Objeto que define las respuestas</td><td>-</td></tr><tr><td>security?</td><td><a href="routes.md#authtype-1">AuthType</a></td><td>Tipo de autentificación</td><td>Se asigna dependiendo del tipo de api.</td></tr></tbody></table>
 
 > El símbolo `?` indica que el parámetro es opcional, tal como lo define en TypeScript.
 
@@ -327,6 +398,8 @@ Los parámetros disponibles son:
 Cada input se debe definir un objeto con los siguientes datos.
 
 <table><thead><tr><th width="186">Campo</th><th width="207">Tipo</th><th>Descripción</th></tr></thead><tbody><tr><td>in</td><td><a href="routes.md#paramin">ParamIn</a></td><td>Indica la ubicación del parámetro (query, header, path, etc.)</td></tr><tr><td>description?</td><td>string</td><td>Descripción del parámetro</td></tr><tr><td>required?</td><td>boolean</td><td>Indica si el parámetro es obligatorio</td></tr><tr><td>type?</td><td><a href="routes.md#paramtype">ParamType</a></td><td>Tipo de dato del parámetro (string, number, boolean, etc.)</td></tr><tr><td>format?</td><td><a href="routes.md#paramformat">ParamFormat</a></td><td>Formato del parámetro (int32, float, double, etc.)</td></tr><tr><td>schema?</td><td>Record&#x3C;string, any></td><td>Esquema del parámetro</td></tr><tr><td>schemaRef?</td><td>string</td><td>Referencia a un esquema externo</td></tr><tr><td>collectionFormat?</td><td><a href="routes.md#paramcollectionformat">ParamCollectionFormat</a></td><td>Formato de colección del parámetro</td></tr><tr><td>items?</td><td>Record&#x3C;string, any></td><td>Definición de los elementos si el parámetro es un array</td></tr></tbody></table>
+
+> 📃 Se debe usar solo uno de los tipos **schema** o **shemaRef**.&#x20;
 
 #### **Input Query**
 
@@ -384,6 +457,61 @@ parameters: {
 }
 ```
 
+En este caso el nombre `ClientGetByIdRequest` hace referencia a una variable definida en el archivo [swagger-autogen](routes.md#swagger-autogen) en el parámetro de `definitions`.
+
+> 👍 Como estándar se recomienda tener estas definiciones en un archivo con el sufijo&#x20;
+>
+> `<name>.mock.ts`. Ya que puede servir para swagger como para las pruebas unitarias.
+
+{% tabs %}
+{% tab title="client.mock.js" %}
+```javascript
+const input = {
+  id: '123456',
+}
+
+const client = {
+  name: 'John Doe',
+  email: 'jhonDoe@credicorp.com',
+  phone: '987654321',
+}
+
+const ClientGetByIdSwagger = {
+  ClientGetByIdRequest: input,
+  ClientGetByIdResponse: client,
+}
+
+module.exports = {
+  ClientSwagger: {
+    ...ClientGetByIdSwagger,
+  },
+}
+```
+{% endtab %}
+
+{% tab title="client.mock.ts" %}
+```typescript
+const input = {
+  id: '123456'
+}
+const client = {
+  name: 'John Doe',
+  email: 'jhonDoe@credicorp.com',
+  phone: '987654321'
+}
+
+const ClientGetByIdSwagger = {
+  ClientGetByIdRequest: input,
+  ClientGetByIdResponse: client
+}
+
+export const ClientSwagger = {
+  ...ClientGetByIdSwagger
+}
+```
+{% endtab %}
+{% endtabs %}
+
 #### Input File
 
 ```javascript
@@ -414,11 +542,38 @@ parameters: {
 }
 ```
 
-
-
 ### ResponseSwagger
 
+Cada respuesta se debe definir un objeto llamado `responses` con los siguientes datos.
 
+<table><thead><tr><th width="186">Campo</th><th width="207">Tipo</th><th>Descripción</th></tr></thead><tbody><tr><td>description?</td><td>string</td><td>Descripción del parámetro</td></tr><tr><td>schema?</td><td>Record&#x3C;string, any></td><td>Esquema del parámetro</td></tr><tr><td>schemaRef?</td><td>string</td><td>Referencia a un esquema externo</td></tr></tbody></table>
+
+Donde la key de cada ítem debe ser un número que representa al **status-code.**&#x20;
+
+#### Output Body SchemaRef
+
+Para este caso también se define la variable en un archivo [mock](routes.md#client.mock.js).
+
+```javascript
+responses: { 
+    200: { schemaRef: 'ClientGetByIdResponse' } 
+},
+```
+
+#### **Output Body Schema**
+
+```javascript
+responses: {
+  200: {
+    description: 'Cliente solicitado',
+    schema: {
+      name: 'John Doe',
+      email: 'jhonDoe@credicorp.com',
+      phone: '987654321',
+    }
+  }
+}
+```
 
 ### Tipos de Datos
 
@@ -489,5 +644,13 @@ Formato de colección, solo usar cuando el tipo `IOType` es `multipart/form-data
 type ParamCollectionFormat = 'csv' | 'ssv' | 'tsv' | 'pipes' | 'multi'
 ```
 
+#### AuthType
 
+Tipo de autenticación este se asigna de por defecto dependiendo del tipo de api.
 
+* Internal - Negocio: basic
+* External - Experiencia: bearer
+
+```typescript
+type AuthType = 'basicAuth' | 'bearerAuth'
+```
