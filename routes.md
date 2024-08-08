@@ -552,7 +552,7 @@ Donde la key de cada ítem debe ser un número que representa al **status-code.*
 
 #### Output Body SchemaRef
 
-Para este caso también se define la variable en un archivo [mock](routes.md#client.mock.js).
+Para este caso también se define la variable en un archivo [mock](routes.md#input-body-schemaref).
 
 ```javascript
 responses: { 
