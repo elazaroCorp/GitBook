@@ -20,8 +20,9 @@ Para crear un servicio se recomienda usar una clase para mantener el estándar.
 const { clientRepository } = require('./client.repository')
 
 class ClientService {
-  getById(id, rqId) {
-    return clientRepository.getById(id, rqId)
+  async getById(id, rqId) {
+    const client = await clientRepository.getById(id, rqId)
+    return client.info
   }
 }
 
@@ -33,11 +34,13 @@ module.exports = { clientService }
 
 {% tab title="client.service.ts" %}
 ```typescript
+import { ClientInfo } from './client'
 import { clientRepository } from './client.repository'
 
 export class ClientService {
-  async getById(id: number, rqId: string): Promise<any> {
-    return clientRepository.getById(id, rqId)
+  async getById(id: number, rqId: string): Promise<ClientInfo> {
+    const client = await clientRepository.getById(id, rqId)
+    return client.info
   }
 }
 
