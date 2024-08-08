@@ -1,6 +1,6 @@
 # Routes
 
-Las rutas de un modulo son definidas en una clase que debe extender de **Routes\<T>**. Para ello se debe pasar como parámetros de la clase extendida el nombre del modulo y una instancia del controller.
+Las rutas de un módulo son definidas en una clase que debe extender de **Routes\<T>**. Para ello se debe pasar como parámetros de la clase extendida el nombre del módulo y una instancia del controller.
 
 La clase Routes necesita el tipo \<T> que representa al controller para poder llamar a los métodos usando `this`.&#x20;
 
@@ -44,7 +44,7 @@ export const clientRouter = new ClientRoutes().router
 {% endtab %}
 {% endtabs %}
 
-> ✅ Todas los rutas deben estar dentro de la función setRoutes() .
+> ✅ Todas las rutas deben estar dentro de la función setRoutes() .
 
 ## SetRoutes()
 
