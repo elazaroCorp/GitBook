@@ -172,9 +172,15 @@ const transactionDB = await DataBaseFactory.getTransaction('nameConnection')
 
 Es una función que nos permite ejecutar la query, pasando los siguientes parametros en un objeto json:
 
+**Input**
+
 * request: instancia de la clase `Request` de mssql
 * query: contenido de la query en `string`
 * rqId: identificador de la petición
+
+**Response**
+
+* Retorna el valor de `recordset`
 
 Esta función tiene la finalidad de escanear las consultas para generar
 
