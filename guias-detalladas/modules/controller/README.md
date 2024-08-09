@@ -40,7 +40,7 @@ export class ClientController {
 
 ### Try / Catch
 
-Siempre se debe agregar un try/catch en cada método para poder capturar el error y tratarlo. Sin embargo, en este caso ya no es necesario porque se agrega cuando se instancia en las [Rutas](../../routes.md#controller).
+Siempre se debe agregar un try/catch en cada método para poder capturar el error y tratarlo. Sin embargo, en este caso ya no es necesario porque se agrega cuando se instancia en las [Rutas](../routes.md#controller).
 
 Además, todos los endpoints tienen asociados un middleware de error, con lo cual el servicio no va ser interrumpido.
 

@@ -170,7 +170,7 @@ Lo esencia de este tipo de estructuras es cumplir con ciertos principios como
 * Patrón Mapeador
 * Unit Test
 
-<figure><img src="../.gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure>
 
 &#x20;Las capas que se presentan son
 

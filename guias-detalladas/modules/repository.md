@@ -154,7 +154,7 @@ export class Client {
 
 Esta es una clase con métodos estáticos para obtener la conexión a la base de datos, para ello es necesario pasar como parámetro el nombre de la conexión (nameConnection).
 
-> [Recordar ](guias-detalladas/server.md#internal-server)que el nombre de la conexión ha sido definido en la clase `Server` en el archivo `application.[ts|js]`
+> [Recordar ](../server.md#internal-server)que el nombre de la conexión ha sido definido en la clase `Server` en el archivo `application.[ts|js]`
 
 Se tiene los siguientes métodos:
 
