@@ -72,6 +72,84 @@ En el ejemplo se puede ver los siguiente:
 * Se ejecuta la query usando la función `runSqlQuery`
 * Se crea y retorna una instancia de la clase `Client` esto porque es parte del dominio.
 
+### Entity
+
+Como los repositorios reciben y retornan objetos creamos la clase `Client` como una entidad que pertenece al dominio.
+
+{% tabs %}
+{% tab title="client.entity.js" %}
+```javascript
+/**
+ * @typedef {Object} ClientProps
+ * @property {string} name - El nombre del cliente.
+ * @property {string} mail - El correo electrónico del cliente.
+ * @property {string} nroDocument - El número de documento del cliente.
+ */
+
+/**
+ * @typedef {Object} ClientInfo
+ * @property {string} name - El nombre del cliente.
+ * @property {string} mail - El correo electrónico del cliente.
+ */
+
+class Client {
+  /**
+   * @private
+   * @readonly
+   * @type {ClientProps}
+   */
+  props
+
+  constructor(props) {
+    this.props = props
+  }
+
+  /**
+   * @returns {ClientInfo}
+   */
+  get info() {
+    return {
+      name: this.props.name,
+      mail: this.props.mail,
+    }
+  }
+}
+
+module.exports = { Client }
+```
+{% endtab %}
+
+{% tab title="client.entity.ts" %}
+```typescript
+export interface ClientProps {
+  name: string
+  mail: string
+  nroDocument: string
+}
+
+export interface ClientInfo {
+  name: string
+  mail: string
+}
+
+export class Client {
+  private readonly props: ClientProps
+
+  constructor(props: ClientProps) {
+    this.props = props
+  }
+
+  get info(): ClientInfo {
+    return {
+      name: this.props.name,
+      mail: this.props.mail
+    }
+  }
+}
+```
+{% endtab %}
+{% endtabs %}
+
 ## DataBaseFactory
 
 Esta es una clase con métodos estáticos para obtener la conexión a la base de datos, para ello es necesario pasar como parámetro el nombre de la conexión (nameConnection).
@@ -92,6 +170,16 @@ const transactionDB = await DataBaseFactory.getTransaction('nameConnection')
 
 ## runSqlQuery
 
+Es una función que nos permite ejecutar la query, pasando los siguientes parametros en un objeto json:
 
+* request: instancia de la clase `Request` de mssql
+* query: contenido de la query en `string`
+* rqId: identificador de la petición
 
-&#x20;
+Esta función tiene la finalidad de escanear las consultas para generar
+
+* Generar un trace o camino de todos los componentes (**tablas DB**) por el cual paso esta petición gracias a la variable `rqId`.
+
+```javascript
+const result = await runSqlQuery({ query, request, rqId }
+```

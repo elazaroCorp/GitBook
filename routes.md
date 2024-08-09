@@ -107,7 +107,7 @@ class ClientRoutes extends Routes<ClientController> {
 
 Cada ruta debe tener los siguientes parámetros definidos en un objeto `{}`:
 
-<table><thead><tr><th width="140">Parámetros</th><th width="111">Opcional/Requerido<select><option value="0Q1ARrrBHaBM" label="Opcional" color="blue"></option><option value="6gbmhxC1uFKA" label="Requerido" color="blue"></option></select></th><th>Descripción</th></tr></thead><tbody><tr><td>resource</td><td><span data-option="6gbmhxC1uFKA">Requerido</span></td><td>Nombre del recurso</td></tr><tr><td>validator</td><td><span data-option="0Q1ARrrBHaBM">Opcional</span></td><td>Esquema de validación en request o response, ya sea en Zod o Yoi</td></tr><tr><td>swagger</td><td><span data-option="6gbmhxC1uFKA">Requerido</span></td><td>Definición de json swagger.</td></tr><tr><td>before</td><td><span data-option="0Q1ARrrBHaBM">Opcional</span></td><td>Arreglo de middlewares que se ejecutaran antes del controller.</td></tr><tr><td>controller</td><td><span data-option="6gbmhxC1uFKA">Requerido</span></td><td>Método del controller.</td></tr><tr><td>after</td><td><span data-option="0Q1ARrrBHaBM">Opcional</span></td><td>Arreglo de middlewares que se ejecutaran después del controller.</td></tr></tbody></table>
+<table><thead><tr><th width="140">Parámetros</th><th width="111">Opcional/Requerido<select><option value="0Q1ARrrBHaBM" label="Opcional" color="blue"></option><option value="6gbmhxC1uFKA" label="Requerido" color="blue"></option></select></th><th>Descripción</th></tr></thead><tbody><tr><td>resource</td><td><span data-option="6gbmhxC1uFKA">Requerido</span></td><td>Nombre del recurso</td></tr><tr><td>validator</td><td><span data-option="0Q1ARrrBHaBM">Opcional</span></td><td>Esquema de validación en request o response, ya sea en Zod o Yoi</td></tr><tr><td>swagger</td><td><span data-option="6gbmhxC1uFKA">Requerido</span></td><td>Definición de json swagger.</td></tr><tr><td>before</td><td><span data-option="0Q1ARrrBHaBM">Opcional</span></td><td>Arreglo de middlewares que se ejecutaran antes del controller.</td></tr><tr><td>controller</td><td><span data-option="6gbmhxC1uFKA">Requerido</span></td><td>Método del controller. Por detrás se encapsula en un try/catch</td></tr></tbody></table>
 
 ## Resource
 
@@ -136,6 +136,25 @@ El controlador se define usando la propiedad controller
 this.get({
     controller: this.controller.getById
 })
+```
+
+## Before
+
+Aquí se puede agregar un arreglo de middlewares antes de ejecutar el controller.
+
+```javascript
+this.get({
+    before: [accessMiddleware],
+    controller: this.controller.getById
+})
+
+const accessMiddleware = (req, res, next) => {
+  if (req.headers.token === 1234) {
+    return next()
+  } else {
+    throw new Error('Access token denied')
+  }
+}
 ```
 
 ## Validator
@@ -654,3 +673,191 @@ Tipo de autenticación este se asigna de por defecto dependiendo del tipo de api
 ```typescript
 type AuthType = 'basicAuth' | 'bearerAuth'
 ```
+
+## Ejemplos
+
+{% tabs %}
+{% tab title="client.routes.js" %}
+```javascript
+const {
+  Routes,
+  Zod: { z },
+  Joi,
+} = require('cc-backend-ts')
+const { ClientController } = require('./client.controller')
+
+/** @extends {Routes<ClientController>} */
+class ClientRoutes extends Routes {
+  constructor() {
+    super('client', new ClientController())
+  }
+
+  setRoutes() {
+    this.post({
+      resource: 'get_by_id/:id/:test',
+      before: [accessMiddleware],
+      validator: {
+        request: {
+          body: z
+            .object({
+              id: z.string(),
+            })
+            .strict(),
+        },
+        response: Joi.object({
+          nroDocument: Joi.string(),
+          name: Joi.string(),
+          mail: Joi.string().required(),
+        }),
+      },
+      controller: this.controller.getById,
+      swagger: {
+        description: 'Obtine un cliente por su id',
+        responses: { 200: { schemaRef: 'ClientGetByIdResponse' } },
+        parameters: {
+          body: {
+            in: 'body',
+            required: true,
+            schemaRef: 'ClientGetByIdRequest',
+          },
+          id: {
+            in: 'path',
+            required: true,
+            type: 'string',
+          },
+          test: {
+            in: 'path',
+            required: true,
+            type: 'string',
+          },
+          idv2: {
+            in: 'query',
+            required: true,
+            type: 'string',
+          },
+        },
+      },
+    })
+
+    this.post({
+      resource: 'find_by_id',
+      controller: this.controller.getById,
+      swagger: {
+        description: 'Obtine un cliente por su id',
+        responses: { 200: { schemaRef: 'ClientGetByIdResponse' } },
+        parameters: {
+          body: {
+            in: 'body',
+            required: true,
+            schemaRef: 'ClientGetByIdRequest',
+          },
+        },
+      },
+    })
+  }
+}
+
+const accessMiddleware = (req, res, next) => {
+  if (req.headers.token === 1234) {
+    return next()
+  } else {
+    throw new Error('Access denied')
+  }
+}
+
+const clientRouter = new ClientRoutes().router
+
+module.exports = {
+  clientRouter,
+}
+```
+{% endtab %}
+
+{% tab title="client.routes.ts" %}
+```typescript
+import { Routes, Zod, Joi } from 'cc-backend-ts'
+import { ClientController } from './client.controller'
+const { z } = Zod
+
+class ClientRoutes extends Routes<ClientController> {
+  constructor() {
+    super('client', new ClientController())
+  }
+
+  setRoutes(): void {
+    this.post({
+      resource: 'get_by_id/:id/:test',
+      validator: {
+        request: {
+          body: z
+            .object({
+              id: z.string()
+            })
+            .strict()
+        },
+        response: Joi.object({
+          name: Joi.string(),
+          mail: Joi.string().required()
+        })
+      },
+      before: [accessMiddleware],
+      controller: this.controller.getById,
+      swagger: {
+        description: 'Obtine un cliente por su id',
+        responses: { 200: { schemaRef: 'ClientGetByIdResponse' } },
+        parameters: {
+          body: {
+            in: 'body',
+            required: true,
+            schemaRef: 'ClientGetByIdRequest'
+          },
+          id: {
+            in: 'path',
+            required: true,
+            type: 'string'
+          },
+          test: {
+            in: 'path',
+            required: true,
+            type: 'string'
+          },
+          idv2: {
+            in: 'query',
+            required: true,
+            type: 'string'
+          }
+        }
+      }
+    })
+
+    this.post({
+      resource: 'find_by_id',
+      controller: this.controller.getById,
+      swagger: {
+        description: 'Obtine un cliente por su id',
+        responses: { 200: { schemaRef: 'ClientGetByIdResponse' } },
+        parameters: {
+          body: {
+            in: 'body',
+            required: true,
+            schemaRef: 'ClientGetByIdRequest'
+          }
+        }
+      }
+    })
+  }
+}
+
+const accessMiddleware = (req: any, res: any, next: any): void => {
+  if (req.headers.token === 1234) {
+    return next()
+  } else {
+    throw new Error('Access denied')
+  }
+}
+
+export const clientRouter = new ClientRoutes().router
+
+```
+{% endtab %}
+{% endtabs %}
