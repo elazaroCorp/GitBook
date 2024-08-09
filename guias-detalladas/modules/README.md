@@ -124,7 +124,9 @@ Proyect
 │    │    │    │    ├── client.routes.js
 │    │    │    │    └── client.controller.js
 │    │    │    ├── application
-│    │    │    │    └── client.service.js
+│    │    │    │    ├── deleteClient.service.js
+│    │    │    │    ├── updateInfoClient.service.js
+│    │    │    │    └── createClient.service.js
 │    │    │    └── index.js
 │    │    └── setRoutes.js
 │    └── application.js
@@ -147,7 +149,9 @@ Proyect
 │    │    │    │    ├── client.routes.ts
 │    │    │    │    └── client.controller.ts
 │    │    │    ├── application
-│    │    │    │    └── client.service.ts
+│    │    │    │    ├── deleteClient.service.ts
+│    │    │    │    ├── updateInfoClient.service.ts
+│    │    │    │    └── createClient.service.ts
 │    │    │    └── index.ts
 │    │    └── setRoutes.ts
 │    └── application.ts
