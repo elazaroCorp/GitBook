@@ -24,10 +24,10 @@ En los ejemplos, se seguirá la siguiente estructura de archivos presentada.
 Proyect
 ├── package.json
 ├── src
-│    ├── Application.js
-│    ├── Secrets 
-│    │    ├── Secrets.interface.js
-│    │    ├── Secrets.js
+│    ├── application.js
+│    ├── secrets 
+│    │    ├── secrets.interface.js
+│    │    ├── secrets.js
 │    │    └── index.js
 └── jsconfig.json
 ```
@@ -38,10 +38,10 @@ Proyect
 Proyect
 ├── package.json
 ├── src
-│    ├── Application.ts
-│    ├── Secrets 
-│    │    ├── Secrets.interface.ts
-│    │    ├── Secrets.ts
+│    ├── application.ts
+│    ├── secrets 
+│    │    ├── secrets.interface.ts
+│    │    ├── secrets.ts
 │    │    └── index.ts
 └── tsconfig.json
 ```
