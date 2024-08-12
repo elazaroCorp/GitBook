@@ -290,7 +290,7 @@ this.post({
           body: {
             in: 'body',
             required: true,
-            schemaRef: 'ClientGetByIdRequest'
+            schemaRef: 'ClientRegisterBody'
           },
           id: {
             in: 'path',
@@ -298,7 +298,7 @@ this.post({
             type: 'string'
           }
        },
-       responses: { 200: { schemaRef: 'ClientGetByIdResponse' } },
+       responses: { 200: { schemaRef: 'ClientRegisterResponse' } },
   }
 })
 ```
@@ -313,10 +313,10 @@ this.post({
           body: {
             in: 'body',
             required: true,
-            schemaRef: 'ClientGetByIdRequest'
+            schemaRef: 'ClientRegisterBody'
           }
        },
-       responses: { 200: { schemaRef: 'ClientGetByIdResponse' } },
+       responses: { 200: { schemaRef: 'ClientRegisterResponse' } },
   }
 })
 ```
@@ -497,7 +497,7 @@ const client = {
 }
 
 const ClientGetByIdSwagger = {
-  ClientGetByIdRequest: input,
+  ClientGetByIdBody: input,
   ClientGetByIdResponse: client,
 }
 
@@ -521,7 +521,7 @@ const client = {
 }
 
 const ClientGetByIdSwagger = {
-  ClientGetByIdRequest: input,
+  ClientGetByIdBody: input,
   ClientGetByIdResponse: client
 }
 
@@ -719,7 +719,7 @@ class ClientRoutes extends Routes {
           body: {
             in: 'body',
             required: true,
-            schemaRef: 'ClientGetByIdRequest',
+            schemaRef: 'ClientGetByIdBody',
           },
           id: {
             in: 'path',
@@ -741,16 +741,16 @@ class ClientRoutes extends Routes {
     })
 
     this.post({
-      resource: 'find_by_id',
-      controller: this.controller.getById,
+      resource: 'register',
+      controller: this.controller.register,
       swagger: {
-        description: 'Obtine un cliente por su id',
-        responses: { 200: { schemaRef: 'ClientGetByIdResponse' } },
+        description: 'Registra un nuevo cliente',
+        responses: { 200: { schemaRef: 'ClientRegisterResponse' } },
         parameters: {
           body: {
             in: 'body',
             required: true,
-            schemaRef: 'ClientGetByIdRequest',
+            schemaRef: 'ClientRegisterBody',
           },
         },
       },
@@ -832,19 +832,19 @@ class ClientRoutes extends Routes<ClientController> {
     })
 
     this.post({
-      resource: 'find_by_id',
-      controller: this.controller.getById,
+      resource: 'register',
+      controller: this.controller.register,
       swagger: {
-        description: 'Obtine un cliente por su id',
-        responses: { 200: { schemaRef: 'ClientGetByIdResponse' } },
+        description: 'Registra un nuevo cliente',
+        responses: { 200: { schemaRef: 'ClientRegisterResponse' } },
         parameters: {
           body: {
             in: 'body',
             required: true,
-            schemaRef: 'ClientGetByIdRequest'
-          }
-        }
-      }
+            schemaRef: 'ClientRegisterBody',
+          },
+        },
+      },
     })
   }
 }
