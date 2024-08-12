@@ -165,18 +165,15 @@ La validación puede realizarse en la entrada y salida de datos, por ello se tie
 
 ### Request
 
-Se valida los datos de input como pueden ser `headers`, `params`, `query`, `body`.
+Se valida los datos de input como pueden ser  `params`, `query`, `body`.
 
 ```javascript
 this.get({
   validator: {
     request: {
-      headers: Joi.object(),
-      query: Joi.object(),
-      params: z.object(),
-      body: z.object({
-          id: z.string()
-        }).strict()
+      body: z.object({ id: z.string() }).strict(),
+      query: z.object({ idv2: z.string() }).strict(),
+      params: z.object({ id: z.string(), test: z.string() }).strict(),
     },
 })
 ```
@@ -193,24 +190,24 @@ Si los datos que se validan son incorrectos se lanzara un error con la siguiente
 }
 ```
 
-En el campo extra va los detalles del error, esto va depender de la respuesta de Zod o Joi.
+En el campo extra va los detalles del error, esto va a depender de la respuesta de Zod o Joi.
 
 ```javascript
 {
   "extra": {
       "data": {
         "id": "123456",
-        "test": "info"
+        "testData": "info"
       },
       "error": {
         "issues": [
           {
             "code": "unrecognized_keys",
             "keys": [
-              "test"
+              "testData"
             ],
             "path": [],
-            "message": "Unrecognized key(s) in object: 'test'"
+            "message": "Unrecognized key(s) in object: 'testData'"
           }
         ],
         "name": "ZodError"
@@ -271,6 +268,12 @@ Ejemplo usando Joi
       ]
 }
 ```
+
+### RqId (Headers)
+
+Se tiene una validación por defecto en todos los endpoints, se tiene que enviar en los headers el campo `rqId` .
+
+Este campo debe ser un uuid.  &#x20;
 
 ## Swagger
 
@@ -561,6 +564,14 @@ parameters: {
   }
 }
 ```
+
+### RqId (Header)
+
+Se agrega por defecto en todos los endpoints, el campo `rqId` en swagger. &#x20;
+
+Ejemplo.
+
+<figure><img src="../../.gitbook/assets/image (2).png" alt=""><figcaption></figcaption></figure>
 
 ### ResponseSwagger
 
