@@ -13,11 +13,26 @@ const { clientService } = require('./client.service')
 class ClientController {
   async getById(req, res, next) {
     const rq = new Rq(req)
+    const info = {
+      param: req.params,
+      query: req.query,
+      body: req.body,
+    }
+    console.log('info', info)
     return clientService.getById(req.body.id, rq.id)
   }
 }
 
 module.exports = { ClientController }
+
+
+/**
+  info {
+    param: { id: '12', test: 'test' },
+    query: { idv2: '5500124' },
+    body: { id: '123456' }
+  }
+*/
 ```
 {% endtab %}
 
@@ -29,9 +44,23 @@ import { clientService } from './client.service'
 export class ClientController {
   async getById(req: any, res: any, next: any): Promise<any> {
     const rq = new Rq(req)
+    const info = {
+      param: req.params,
+      query: req.query,
+      body: req.body,
+    }
+    console.log('info', info)
     return clientService.getById(req.body.id, rq.id)
   }
 }
+
+/**
+  info {
+    param: { id: '12', test: 'test' },
+    query: { idv2: '5500124' },
+    body: { id: '123456' }
+  }
+*/
 ```
 {% endtab %}
 {% endtabs %}
