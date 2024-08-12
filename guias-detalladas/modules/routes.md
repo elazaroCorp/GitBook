@@ -717,7 +717,6 @@ class ClientRoutes extends Routes {
             .strict(),
         },
         response: Joi.object({
-          nroDocument: Joi.string(),
           name: Joi.string(),
           mail: Joi.string().required(),
         }),
