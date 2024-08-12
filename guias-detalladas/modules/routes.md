@@ -172,6 +172,7 @@ this.get({
   validator: {
     request: {
       headers: Joi.object(),
+      query: Joi.object(),
       params: z.object(),
       body: z.object({
           id: z.string()
