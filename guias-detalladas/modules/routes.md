@@ -322,7 +322,7 @@ this.post({
 
 ### Swagger Autogen
 
-El desarrollo de la definición swagger está desarrolladas sobre la librería `Swagger autongen` . Esta la librería usa comentarios para definir los endpoint, esto impide a que el editor de código le proporcione la ayuda al desarrollador. &#x20;
+El desarrollo de la definición swagger está desarrolladas sobre la librería `Swagger autongen` . Esta u otras librerías usan comentarios para definir los endpoint, esto impide a que el editor de código le proporcione la ayuda al desarrollador. &#x20;
 
 **Requerimientos:**
 
