@@ -12,3 +12,7 @@
     * [Request Rq](guias-detalladas/modules/controller/request-rq.md)
   * [Service](guias-detalladas/modules/service.md)
   * [Repository](guias-detalladas/modules/repository.md)
+
+***
+
+* [HttpProxy](httpproxy.md)
