@@ -30,6 +30,14 @@ Esta clase nos ayuda a crear un intermediario entre el consumidor y la api. Esto
 * Abstraer la forma en la que se consumen las apis, es decir se en un futuro se quiere cambiar el uso de axios a fetch será más fácil y transparente para los desarrolladores.
 * Enviar los datos como objetos ya sea en los parámetros y query.
 
+### Recomendaciones
+
+* Si la api es especifica de la célula, se recomienda crearlo en una librería de la célula.
+* Si la api es compartida o general, se recomienda crearlo en una librería general para todas las células, ejemplo api de seguridad.
+* Las apis deben definirse en typescript para tener los tipos de datos en el input y output de cada api.
+
+
+
 
 
 
