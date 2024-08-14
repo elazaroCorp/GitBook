@@ -32,11 +32,13 @@ Esta clase nos ayuda a crear un intermediario entre el consumidor y la api. Esto
 
 ### Recomendaciones
 
-* Si la api es especifica de la célula, se recomienda crearlo en una librería de la célula.
-* Si la api es compartida o general, se recomienda crearlo en una librería general para todas las células, ejemplo api de seguridad.
+* Si la api es <mark style="background-color:green;">especifica</mark> de la célula, se recomienda crearlo en una librería de la célula.
+* Si la api es <mark style="background-color:yellow;">compartida</mark> o general, se recomienda crearlo en una librería general para todas las células, ejemplo api de seguridad.
 * Las apis deben definirse en typescript para tener los tipos de datos en el input y output de cada api.
 
+<figure><img src=".gitbook/assets/image (4).png" alt="" width="518"><figcaption></figcaption></figure>
 
+### Modulo
 
 
 
