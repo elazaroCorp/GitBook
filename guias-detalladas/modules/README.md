@@ -4,6 +4,8 @@ Un módulo es una carpeta que se utiliza para organizar la estructura de la apli
 
 Los módulos son recomendables por la forma efectiva de organizar sus componentes. Además, que facilita el entendimiento del proyecto, manteniendo el código organizado y estableciendo límites entre módulos.
 
+<figure><img src="../../.gitbook/assets/image (1).png" alt="" width="537"><figcaption></figcaption></figure>
+
 ## Estructura Simple
 
 Para demostrar esto, creamos la siguiente estructura.
@@ -174,7 +176,7 @@ Lo esencia de este tipo de estructuras es cumplir con ciertos principios como
 * Patrón Mapeador
 * Unit Test
 
-<figure><img src="../../.gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 &#x20;Las capas que se presentan son
 

@@ -412,7 +412,7 @@ npm run swagen
 
 Los parámetros disponibles son:
 
-<table><thead><tr><th width="145">Campo</th><th width="195">Tipo</th><th width="265">Descripción</th><th>Default Value</th></tr></thead><tbody><tr><td>description</td><td>string</td><td>Descripción</td><td>-</td></tr><tr><td>consumes?</td><td><a href="routes.md#iotype">IOType</a>[]</td><td>Tipos de entrada que consume</td><td><code>json</code></td></tr><tr><td>produces?</td><td><a href="routes.md#iotype">IOType</a>[]</td><td>Tipos de salida que produce</td><td><code>json</code></td></tr><tr><td>tags?</td><td>string[]</td><td>Etiquetas para la organización y filtrado</td><td>name_module</td></tr><tr><td>summary?</td><td>string</td><td>Resumen corto del propósito</td><td>null</td></tr><tr><td>deprecaded?</td><td>boolean</td><td>Indica si está en desuso</td><td><code>false</code></td></tr><tr><td>ignore?</td><td>boolean</td><td>Indica si se debe ignorar en la documentación</td><td><code>false</code></td></tr><tr><td>parameters?</td><td>{[K: string]: <a href="routes.md#parameterswagger">ParameterSwagger</a> }</td><td>Objeto que define los parámetros</td><td>-</td></tr><tr><td>responses?</td><td>{[K: number]: <a href="routes.md#responseswagger">ResponseSwagger</a> }</td><td>Objeto que define las respuestas</td><td>-</td></tr><tr><td>security?</td><td><a href="routes.md#authtype-1">AuthType</a></td><td>Tipo de autentificación</td><td>Se asigna dependiendo del tipo de api.</td></tr></tbody></table>
+<table><thead><tr><th width="168">Campo</th><th width="195">Tipo</th><th width="265">Descripción</th><th>Default Value</th></tr></thead><tbody><tr><td>description</td><td>string</td><td>Descripción</td><td>-</td></tr><tr><td>consumes?</td><td><a href="routes.md#iotype">IOType</a>[]</td><td>Tipos de entrada que consume</td><td><code>json</code></td></tr><tr><td>produces?</td><td><a href="routes.md#iotype">IOType</a>[]</td><td>Tipos de salida que produce</td><td><code>json</code></td></tr><tr><td>tags?</td><td>string[]</td><td>Etiquetas para la organización y filtrado</td><td>name_module</td></tr><tr><td>summary?</td><td>string</td><td>Resumen corto del propósito</td><td>null</td></tr><tr><td>deprecaded?</td><td>boolean</td><td>Indica si está en desuso</td><td><code>false</code></td></tr><tr><td>ignore?</td><td>boolean</td><td>Indica si se debe ignorar en la documentación</td><td><code>false</code></td></tr><tr><td>parameters?</td><td>{[K: string]: <a href="routes.md#parameterswagger">ParameterSwagger</a> }</td><td>Objeto que define los parámetros</td><td>-</td></tr><tr><td>responses?</td><td>{[K: number]: <a href="routes.md#responseswagger">ResponseSwagger</a> }</td><td>Objeto que define las respuestas</td><td>-</td></tr><tr><td>security?</td><td><a href="routes.md#authtype-1">AuthType</a></td><td>Tipo de autentificación</td><td>Se asigna dependiendo del tipo de api.</td></tr></tbody></table>
 
 > El símbolo `?` indica que el parámetro es opcional, tal como lo define en TypeScript.
 
@@ -571,7 +571,7 @@ Se agrega por defecto en todos los endpoints, el campo `rqId` en swagger. &#x20;
 
 Ejemplo.
 
-<figure><img src="../../.gitbook/assets/image (2).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (2) (1).png" alt=""><figcaption></figcaption></figure>
 
 ### ResponseSwagger
 
