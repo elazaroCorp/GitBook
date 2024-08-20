@@ -20,9 +20,56 @@ Adicional a ello, el consumo de las apis debe ser un estándar para todas las c�
 
 Por ello, se propone esta sección donde presentan estructuras, clases, ejemplos, etc.
 
+### Api Name
+
+Esta es una parte importante al momento de definir un HttpProxy, este valor es usando por detrás para hacer las consultas. Este valor del nombre es el que se le ha asignado al servicio usando `azure-pipelines` se tiene un ejemplo:
+
+```yaml
+- template: .devops/pipeline-templates/stages/defaultStage.yml@templates
+  parameters:
+    .....
+    productName: 'portalptc'
+    apiPath: 'portalptc-client'
+    externalExpose: false
+# Production
+- template: .devops/pipeline-templates/stages/defaultStage.yml@templates
+  parameters:
+    ....
+    productName: 'portalptc'
+    apiPath: 'portalptc-client'
+    externalExpose: false
+```
+
+El campo **`apiPath`** tiene un valor de `portalptc-client` este valor hace referencia a dos cosas:
+
+* Nombre de la celula: portalptc
+* Nombre del api: **client**
+
+Este valor del nombre `client` es el que se va a usar al instanciar las propiedades de la clase HttpProxy en el parametro `apiName`.
+
+> Por qué no se usa portalptc? este valor debe ser instanciado dentro de una url
+
+### Base URL
+
+Esta definición hace referencia a una parte que comparten todas las url que tienen las apis de una celula.
+
+Por ejemplo, se tiene las siguientes urls:
+
+* [https://bttccslab006.azurekl.net/portalptc-](https://bttccslab006.azurekl.net/portalptc-)client
+* [https://bttccslab006.azurekl.net/portalptc-](https://bttccslab006.azurekl.net/portalptc-)user
+* [https://bttccslab006.azurekl.net/portalptc-](https://bttccslab006.azurekl.net/portalptc-)account
+
+Para este caso se define el valor de&#x20;
+
+* base URL: [https://bttccslab006.azurekl.net/portalptc-](https://bttccslab006.azurekl.net/portalptc-)
+
+> 👍 Este valor al ser confidencial va a ser definido como un secreto en Azure, por cada ambiente que se tenga DEV, QA, PROD.
+
+Las urls de un api por ambiente pueden visualizarse en el archivo README.md de cada api, en la sección \[URLs]
+
 ## HttpProxy
 
-Esta clase nos ayuda a crear un intermediario entre el consumidor y la api. Esto se realiza por los siguientes motivos:
+Esta clase nos ayuda a crear un intermediario entre el consumidor y el api. Esto se realiza por los siguientes motivos:
 
 * Imprimir los datos necesarios para hacer soporte.
 * Validar parámetros obligatorios como rqId, basicAuth.
@@ -32,8 +79,8 @@ Esta clase nos ayuda a crear un intermediario entre el consumidor y la api. Esto
 
 ### Recomendaciones
 
-* Si la api es <mark style="background-color:green;">especifica</mark> de la célula, se recomienda crearlo en una librería de la célula.
-* Si la api es <mark style="background-color:yellow;">compartida</mark> o general, se recomienda crearlo en una librería general para todas las células, ejemplo api de seguridad.
+* Si el api es <mark style="background-color:green;">especifica</mark> de la célula, se recomienda crearlo en una librería de la célula.
+* Si el api es <mark style="background-color:yellow;">compartida</mark> o general, se recomienda crearlo en una librería general para todas las células, ejemplo api de seguridad.
 * Las apis deben definirse en typescript para tener los tipos de datos en el input y output de cada api.
 
 <figure><img src=".gitbook/assets/image (4).png" alt="" width="518"><figcaption></figcaption></figure>
@@ -130,11 +177,13 @@ En la siguiente imagen muestra la relación entre un HttpProxy y las Rutas del a
 
 ### Usar ApiModule
 
-Para usar api module en una api se tiene que pasar los siguientes parámetros usando la función **setProps**.
+Existen dos formas esta es la primera cuando solo se quiere usar un módulo y no un api completo. Para usar api module en un api se tiene que pasar los siguientes parámetros usando la función **setProps**.
 
 > 🤔 Por que usar una función en lugar del constructor? Esto se debe a que los parámetros son obtenidos como secretos por una función asíncrona. Un constructor no puede ejecutar funciones asíncronas y tampoco puede esperar a que termine.
 
-<table><thead><tr><th width="146">Campo</th><th width="229">Tipo</th><th>Descripción</th></tr></thead><tbody><tr><td>baseUrl</td><td>string</td><td>URL base de la api, por ejemplo <br><a href="https://bttccslab006.azurekl.net/portaltest-">https://bttccslab006.azurekl.net/portaltest-</a> </td></tr><tr><td>basicAuth</td><td>string</td><td>Valor de la autorización Basic</td></tr><tr><td>localUrl</td><td>string</td><td>Url para hacer pruebas en local, ejemplo <br><a href="http://localhost:3000/">http://localhost:3000/</a> </td></tr><tr><td>apiName</td><td>string</td><td>Nombre de la api</td></tr></tbody></table>
+
+
+<table><thead><tr><th width="146">Campo</th><th width="229">Tipo</th><th>Descripción</th></tr></thead><tbody><tr><td><a href="httpproxy.md#url-base">baseUrl</a></td><td>string</td><td>URL base del api, por ejemplo <br><a href="https://bttccslab006.azurekl.net/portaltest-">https://bttccslab006.azurekl.net/portalptc-</a></td></tr><tr><td>basicAuth</td><td>string</td><td>Valor de la autorización Basic</td></tr><tr><td>localUrl</td><td>string</td><td>Url para hacer pruebas en local, ejemplo <br><a href="http://localhost:3000/">http://localhost:3000/</a> </td></tr><tr><td><a href="httpproxy.md#apiname">apiName</a></td><td>string</td><td>Nombre del api</td></tr></tbody></table>
 
 {% tabs %}
 {% tab title="application.ts" %}
@@ -171,9 +220,176 @@ module.exports = startApplication
 {% endtab %}
 {% endtabs %}
 
+Posteriormente, lo puedes usar la instancia en cualquier parte de su aplicación ya sea un controlador de un api experiencia, en un servicio interno, etc.
 
+{% tabs %}
+{% tab title="client.controller.js" %}
+```javascript
+const { Rq } = require('cc-backend-ts')
+const { clientService } = require('./client.service')
 
+class ClientController {
+  async getById(req, res, next) {
+    const rq = new Rq(req)
+    return clientApiModule.getById(
+      {
+        id: req.body.id,
+        idParam: 'id',
+        test: 'test',
+        idv2: 'idv2',
+      },
+      rq.id
+    )
+  }
+}
 
+module.exports = { ClientController }
+```
+{% endtab %}
+
+{% tab title="client.controller.ts" %}
+```typescript
+import { Rq } from 'cc-backend-ts'
+import { clientService } from './client.service'
+
+export class ClientController {
+  async getById(req: any, res: any, next: any): Promise<any> {
+    const rq = new Rq(req)
+     return clientApiModule.getById(
+      {
+        id: req.body.id,
+        idParam: 'id',
+        test: 'test',
+        idv2: 'idv2',
+      },
+      rq.id
+    )
+  }
+}
+```
+{% endtab %}
+{% endtabs %}
+
+## HttpProxyApi
+
+Esta es una clase que al extender nos permite agrupar varios ApiModule. Esto con el fin de tener definido todos los servicios que tiene un api.&#x20;
+
+Para hacer uso de esto se tiene que definir lo siguiente:
+
+* Se crea un archivo \<name\_module>.api.ts
+* Se define los módulos que contiene el api mediante una interfaz.
+* Se crea una clase con el nombre \`\<name>Api que extienda de HttpProxyApi\<T>, donde T es la interfaz de los módulos.
+* En el constructor se le pasa el nombre del api y las instancias de apiModules.
+
+{% tabs %}
+{% tab title="client.api.ts" %}
+```typescript
+import { HttpProxyApi } from '../HttpProxyApi'
+import { clientApiModule, ClientApiModule } from './Modules/Client.api.module'
+
+interface ApiModules {
+  client: ClientApiModule
+}
+
+const apiModules: ApiModules = {
+  client: clientApiModule,
+}
+
+class ClientApi extends HttpProxyApi<ApiModules> {
+  constructor() {
+    super('client', apiModules)
+  }
+}
+
+export const clientApi = new ClientApi()
+```
+{% endtab %}
+{% endtabs %}
+
+### Usar API
+
+En este caso se sigue los mismos pasos que [ApiModule](httpproxy.md#usar-apimodule) donde se define las propiedades al inicio de application. Sin embargo, ya no se **define el parámetro apiName** porque este ya se asignó en el constructor.
+
+{% tabs %}
+{% tab title="application.ts" %}
+```typescript
+async function startApplication() {
+  await secrets.uploadAll()
+
+  clientApi.setProps({
+    baseUrl: secrets.value.baseURL,
+    basicAuth: secrets.value.basicAuth,
+    localUrl: 'http://localhost:3000/',
+  })
+  
+  setRoutes(routes)
+  const server = new ExternalServer({
+    //...
+  })
+  const app = await server.init(routes)
+  app.listen(server.port, () => {
+    console.log(server.messageListening)
+  })
+}
+
+module.exports = startApplication
+```
+{% endtab %}
+{% endtabs %}
+
+Finalmente, para usar un servicio primero se tiene que acceder al módulo y luego al método.
+
+La clase HttpProxyApi tiene una propiedad **`module`** que te permite acceder a los módulos que se han definido.
+
+{% tabs %}
+{% tab title="client.controller.js" %}
+```javascript
+const { Rq } = require('cc-backend-ts')
+const { clientService } = require('./client.service')
+
+class ClientController {
+  async getById(req, res, next) {
+    const rq = new Rq(req)
+    return clientApi.module.client.getById(  // 👈 Aqui se usa .module
+      {
+        id: req.body.id,
+        idParam: 'id',
+        test: 'test',
+        idv2: 'idv2',
+      },
+      rq.id
+    )
+  }
+}
+
+module.exports = { ClientController }
+```
+{% endtab %}
+
+{% tab title="client.controller.ts" %}
+```typescript
+import { Rq } from 'cc-backend-ts'
+import { clientService } from './client.service'
+
+export class ClientController {
+  async getById(req: any, res: any, next: any): Promise<any> {
+    const rq = new Rq(req)
+    return clientApi.module.client.getById(  // 👈 Aqui se usa .module
+      {
+        id: req.body.id,
+        idParam: 'id',
+        test: 'test',
+        idv2: 'idv2',
+      },
+      rq.id
+    )
+  }
+}
+```
+{% endtab %}
+{% endtabs %}
+
+&#x20;
 
 
 
