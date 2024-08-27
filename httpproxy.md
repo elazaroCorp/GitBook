@@ -14,7 +14,7 @@ La arquitectura actual tiene dos capas, apis externas (experiencia) e internas (
 
 La siguiente imagen muestra una abstracción de la arquitectura de apis y células, cada vez que se crean nuevas apis se vuele complicado de mantener y escalar, generando código duplicado en muchos casos.
 
-<figure><img src=".gitbook/assets/image (3).png" alt=""><figcaption><p>Resumen de la arquitectura entre células</p></figcaption></figure>
+<figure><img src=".gitbook/assets/image (3) (1).png" alt=""><figcaption><p>Resumen de la arquitectura entre células</p></figcaption></figure>
 
 Adicional a ello, el consumo de las apis debe ser un estándar para todas las células, donde todos deben cumplir con los requerimientos de Seguridad y Calidad.
 
@@ -83,7 +83,7 @@ Esta clase nos ayuda a crear un intermediario entre el consumidor y el api. Esto
 * Si el api es <mark style="background-color:yellow;">compartida</mark> o general, se recomienda crearlo en una librería general para todas las células, ejemplo api de seguridad.
 * Las apis deben definirse en typescript para tener los tipos de datos en el input y output de cada api.
 
-<figure><img src=".gitbook/assets/image (4).png" alt="" width="518"><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (4) (1).png" alt="" width="518"><figcaption></figcaption></figure>
 
 ### Módulo
 
@@ -173,7 +173,7 @@ interface GetByIdResponse {
 
 En la siguiente imagen muestra la relación entre un HttpProxy y las Rutas del api a la cual hace referencia.
 
-<figure><img src=".gitbook/assets/image.png" alt=""><figcaption><p>Relación entre HttpProxy (Izquierda) con una Api (derecha)</p></figcaption></figure>
+<figure><img src=".gitbook/assets/image (14).png" alt=""><figcaption><p>Relación entre HttpProxy (Izquierda) con una Api (derecha)</p></figcaption></figure>
 
 ### Usar ApiModule
 

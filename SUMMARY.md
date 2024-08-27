@@ -16,3 +16,7 @@
 ***
 
 * [HttpProxy](httpproxy.md)
+
+## TOOLS
+
+* [SonarLint](tools/sonarlint.md)
